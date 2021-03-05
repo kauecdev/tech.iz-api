@@ -9,9 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -32,9 +30,12 @@ public class QuestionsController {
     }
 
     @GetMapping
-    public ResponseEntity<Iterable<Question>> getAll() {
-        Iterable<Question> questions = questionsRepository.findAll();
-        return new ResponseEntity<Iterable<Question>>(questions, HttpStatus.OK);
+    public ResponseEntity<List<Question>> getAll() {
+        Iterable<Question> questionsResponse = questionsRepository.findAll();
+        List<Question> questionsList = new ArrayList<Question>();
+        questionsResponse.forEach(questionsList::add);
+        Collections.shuffle(questionsList);
+        return new ResponseEntity<List<Question>>(questionsList, HttpStatus.OK);
     }
 
 
